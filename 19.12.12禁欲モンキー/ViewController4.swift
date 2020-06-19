@@ -38,8 +38,7 @@ class ViewController4: UIViewController {
     }
     
     
-    
-    
+    //ss
     
     @IBAction func downSwipe(_ sender: UISwipeGestureRecognizer) {
         
