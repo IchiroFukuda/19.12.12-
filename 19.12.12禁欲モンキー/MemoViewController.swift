@@ -7,7 +7,7 @@
 //
 import UIKit
 
-class ViewController5: UIViewController,UITextViewDelegate  {
+class MemoViewController: UIViewController,UITextViewDelegate  {
    var memoArray = [String]()
     var indexPath = 0
     var AddSwitch = false
