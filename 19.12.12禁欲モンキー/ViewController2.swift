@@ -351,7 +351,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             }else{
             let doubleDayHour : Double = (Double)(((day+daySpan)*24)+hour)
             let doubleLevelTime : Double = (Double)(levelTime)
-            let doubleNowLevelTime = fmod((doubleDayHour),doubleLevelTime)
+            let doubledaysNowLevelTime = fmod((doubleDayHour),doubleLevelTime)
             let intNowLevelTime = (Int)(doubleNowLevelTime)
             let untilNextLevel = levelTime-intNowLevelTime
             
