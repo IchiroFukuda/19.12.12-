@@ -158,20 +158,244 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         // Do any additional setup after loading the view.
         }
     
+    func timerStart(){
+        if let startValue : String = userDefaults.string(forKey: "start"){
+        date = startValue
+        let dateFormater = DateFormatter()
+        dateFormater.locale = Locale(identifier: "ja_JP")
+        dateFormater.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        let dateString = dateFormater.date(from: date)
+        startTime = dateString!
+        timer = Timer.scheduledTimer(
+            
+            timeInterval : 1,
+            target: self,
+            selector: #selector(self.timerCounter),
+            userInfo:nil,
+            repeats:true
+        )
+        }
+    }
+    
     @objc func startStopButton(_ sender:UIButton) {
         let userDefaults = UserDefaults.standard
         
         let onakinSwitch = userDefaults.bool(forKey: "onakinSwitch")
         
         if onakinSwitch == false {
-             userStartAlert()
             startAction()
-            
+            userStartAlert()
             
         }else{
             cancelAction()
         }
     }
+    
+    func startAction(){
+             let userDefaults = UserDefaults.standard
+     
+             startTime = Date()
+             let dateFormater = DateFormatter()
+             dateFormater.locale = Locale(identifier: "ja_JP")
+             dateFormater.dateFormat = "yyyy/MM/dd HH:mm:ss"
+             let date = dateFormater.string(from: startTime)
+    
+             userDefaults.set(date,forKey: "start")
+         
+             timerStart()
+          
+         }
+    
+    
+    var startDay = ""
+    var formatter = DateFormatter()
+    var datePicker:UIDatePicker = UIDatePicker()
+    var date1 = Date()
+    
+    func userStartAlert(){
+        
+       
+        
+        let appearance = SCLAlertView.SCLAppearance(
+             showCloseButton: false,
+             shouldAutoDismiss : false
+         )
+        let alert = SCLAlertView(appearance: appearance)
+        let txt = alert.addTextField("ここをタップして下さい")
+         
+        let datePicker:UIDatePicker = UIDatePicker()
+        datePicker.datePickerMode = UIDatePicker.Mode.date
+         datePicker.timeZone = NSTimeZone.local
+         datePicker.locale = Locale.current
+         datePicker.maximumDate = Date()
+         //txt.inputView = datePicker
+        
+         // インプットビュー設定
+         txt.inputView = datePicker
+         alert.addButton("入力する"){
+             // インプットビュー設定
+             txt.endEditing(true)
+            let formatter = DateFormatter()
+             formatter.locale = Locale(identifier: "ja_JP")
+             formatter.dateFormat = "yyyy年MM月dd日"
+            self.date1 = datePicker.date
+            self.startDay = "\(formatter.string(from: datePicker.date))"
+            txt.text = self.startDay
+            
+         }
+        
+        alert.addButton("入力完了"){
+         if txt.text == "" {
+         } else {
+             
+            self.alertNo = 1
+            
+             let now = NSDate()
+            
+            let span = now.timeIntervalSince(self.date1)
+             let daySpan = Int((span/60/60/24))
+            
+            
+            
+            let userDefaults = UserDefaults.standard
+            userDefaults.set(daySpan,forKey: "daySpan")
+            userDefaults.set(self.startDay,forKey: "開始日")
+             //let yearOfDayspan = self.daySpan/365
+             //let dayOFDayspan = Int(fmod(Double(self.daySpan),365))
+             //self.localDayspan = "\(yearOfDayspan)年"+"\(dayOFDayspan)日"
+             alert.hideView()
+             self.loadView()
+             self.viewDidLoad()
+         }
+         }
+         alert.showEdit("開始日を入力する",subTitle:"オナ禁開始日を入力して下さい")
+    }
+    
+    var pickerView: UIPickerView = UIPickerView()
+    let list = ["","1日", "2日", "3日", "4日", "5日", "7日", "10日", "14日", "20日", "30日","40日","50日","60日","70日","80日","90日","100日","150日","200日","300日"]
+    let goalDayArray = [0,1,2,3,4,5,7,10,14,20,30,40,50,60,70,80,90,100,150,200,300]
+    var stringChosedGoal = "10日"
+    var intChosedGoal = 10
+    var userDefaults = UserDefaults.standard
+    private var goalTxt : UITextField = UITextField()
+    
+    
+    func userGoalAlert(){
+        
+        let timeAppearance = SCLAlertView.SCLAppearance(
+            showCloseButton: false,
+            shouldAutoDismiss: false
+        )
+        let timeAlert = SCLAlertView(appearance: timeAppearance)
+        let timeTxt = timeAlert.addTextField("ここをタップして下さい")
+        //１個目のpickerViewの処理
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        
+        timeTxt.inputView = pickerView
+        timeAlert.addButton("目標日数を入力する"){
+            timeTxt.endEditing(true)
+            timeTxt.text = self.stringChosedGoal
+        }
+        timeAlert.addButton("入力完了"){
+            if timeTxt.text == "" {
+            } else {
+                self.alertNo = 0
+                self.userDefaults.set(self.intChosedGoal,forKey: "目標日数")
+               
+                let levelTime = self.intChosedGoal*24/11
+                self.userDefaults.set(levelTime,forKey: "レベルタイム")
+                
+                self.userDefaults.set(true,forKey: "onakinSwitch")
+                
+                timeAlert.hideView()
+                self.loadView()
+                self.viewDidLoad()
+            }
+        }
+        timeAlert.showEdit("目標日数を入力する",subTitle:"目標日数を入力して下さい")
+        
+    }
+    
+    
+    
+    
+    func cancelAction (){
+        let alertController = UIAlertController(title: "リセット",message: "本当にリセットしますか？", preferredStyle: UIAlertController.Style.alert)
+        
+       let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) { (action:UIAlertAction)  in
+         
+        if self.timer != nil{
+            self.timer.invalidate()
+           
+           }
+        
+        let userDefaults = UserDefaults.standard
+        
+        var recordDic = ["日数":"","開始日":"","終了日":""]
+        
+        recordDic["日数"] = self.NumberOfDays
+        
+        recordDic["開始日"]  = self.startTimeLabelText
+        
+        
+        let onakinTime = Date()
+        let dateFormater = DateFormatter()
+        dateFormater.locale = Locale(identifier: "ja_JP")
+        dateFormater.dateFormat = "yyyy年MM月dd日"
+        let date = dateFormater.string(from: onakinTime)
+        
+        recordDic["終了日"] = date
+        
+        var recordArray = [Any]()
+        if userDefaults.array(forKey: "recordArray") != nil{
+            //取得 またas!でアンラップしているのでnilじゃない時のみ
+            recordArray = userDefaults.array(forKey: "recordArray")!
+            
+        }
+        
+        recordArray.append(recordDic)
+        
+        userDefaults.set(recordArray,forKey: "recordArray")
+    
+        userDefaults.removeObject(forKey: "start")
+        
+        userDefaults.removeObject(forKey: "daySpan")
+        
+        userDefaults.removeObject(forKey: "目標日数")
+        
+        userDefaults.removeObject(forKey: "レベルタイム")
+        
+        userDefaults.removeObject(forKey: "開始日")
+        
+        userDefaults.set(false,forKey: "onakinSwitch")
+        
+        let onakinSwitch = userDefaults.bool(forKey: "onakinSwitch")
+        print(onakinSwitch)
+        
+        self.startTimeLabelText = "未スタート"
+        self.timerDayText = "0"
+        self.onakinTimeText = ""
+        self.untilNextLevelText = ""
+        
+        
+        self.loadView()
+        self.viewDidLoad()
+        
+           return
+       }
+       
+       alertController.addAction(okAction)
+       
+       let cancelButton = UIAlertAction(title: "CANCEL", style: UIAlertAction.Style.cancel,handler: nil)
+       alertController.addAction(cancelButton)
+       
+       present(alertController, animated: true, completion : nil)
+       
+       
+    }
+    
+    
     
     
         private func setupLayout() {
@@ -279,20 +503,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         print(tapSwitch)
     }
 
-        func startAction(){
-            let userDefaults = UserDefaults.standard
-    
-            startTime = Date()
-            let dateFormater = DateFormatter()
-            dateFormater.locale = Locale(identifier: "ja_JP")
-            dateFormater.dateFormat = "yyyy/MM/dd HH:mm:ss"
-            let date = dateFormater.string(from: startTime)
-   
-            userDefaults.set(date,forKey: "start")
         
-            timerStart()
-         
-        }
     
         var startTimeLabelText = "未スタート"
         var timerDayText = "0"
@@ -351,7 +562,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             }else{
             let doubleDayHour : Double = (Double)(((day+daySpan)*24)+hour)
             let doubleLevelTime : Double = (Double)(levelTime)
-            let doubledaysNowLevelTime = fmod((doubleDayHour),doubleLevelTime)
+            let doubleNowLevelTime = fmod((doubleDayHour),doubleLevelTime)
             let intNowLevelTime = (Int)(doubleNowLevelTime)
             let untilNextLevel = levelTime-intNowLevelTime
             
@@ -374,212 +585,12 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         }
     
     
-        func cancelAction (){
-            let alertController = UIAlertController(title: "リセット",message: "本当にリセットしますか？", preferredStyle: UIAlertController.Style.alert)
-            
-           let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) { (action:UIAlertAction)  in
-             
-            if self.timer != nil{
-                self.timer.invalidate()
-               
-               }
-            
-            let userDefaults = UserDefaults.standard
-            
-            var recordDic = ["日数":"","開始日":"","終了日":""]
-            
-            recordDic["日数"] = self.NumberOfDays
-            
-            recordDic["開始日"]  = self.startTimeLabelText
-            
-            
-            let onakinTime = Date()
-            let dateFormater = DateFormatter()
-            dateFormater.locale = Locale(identifier: "ja_JP")
-            dateFormater.dateFormat = "yyyy年MM月dd日"
-            let date = dateFormater.string(from: onakinTime)
-            
-            recordDic["終了日"] = date
-            
-            var recordArray = [Any]()
-            if userDefaults.array(forKey: "recordArray") != nil{
-                //取得 またas!でアンラップしているのでnilじゃない時のみ
-                recordArray = userDefaults.array(forKey: "recordArray")!
-                
-            }
-            
-            recordArray.append(recordDic)
-            
-            userDefaults.set(recordArray,forKey: "recordArray")
         
-            userDefaults.removeObject(forKey: "start")
-            
-            userDefaults.removeObject(forKey: "daySpan")
-            
-            userDefaults.removeObject(forKey: "目標日数")
-            
-            userDefaults.removeObject(forKey: "レベルタイム")
-            
-            userDefaults.removeObject(forKey: "開始日")
-            
-            userDefaults.set(false,forKey: "onakinSwitch")
-            
-            let onakinSwitch = userDefaults.bool(forKey: "onakinSwitch")
-            print(onakinSwitch)
-            
-            self.startTimeLabelText = "未スタート"
-            self.timerDayText = "0"
-            self.onakinTimeText = ""
-            self.untilNextLevelText = ""
-            
-            
-            self.loadView()
-            self.viewDidLoad()
-            
-               return
-           }
-           
-           alertController.addAction(okAction)
-           
-           let cancelButton = UIAlertAction(title: "CANCEL", style: UIAlertAction.Style.cancel,handler: nil)
-           alertController.addAction(cancelButton)
-           
-           present(alertController, animated: true, completion : nil)
-           
-           
-        }
     
     
-    var startDay = ""
-    var formatter = DateFormatter()
-    var datePicker:UIDatePicker = UIDatePicker()
-    var date1 = Date()
-    
-    func userStartAlert(){
-        
-       
-        
-        let appearance = SCLAlertView.SCLAppearance(
-             showCloseButton: false,
-             shouldAutoDismiss : false
-         )
-        let alert = SCLAlertView(appearance: appearance)
-        let txt = alert.addTextField("ここをタップして下さい")
-         
-        let datePicker:UIDatePicker = UIDatePicker()
-        datePicker.datePickerMode = UIDatePicker.Mode.date
-         datePicker.timeZone = NSTimeZone.local
-         datePicker.locale = Locale.current
-         datePicker.maximumDate = Date()
-         //txt.inputView = datePicker
-        
-         // インプットビュー設定
-         txt.inputView = datePicker
-         alert.addButton("入力する"){
-             // インプットビュー設定
-             txt.endEditing(true)
-            let formatter = DateFormatter()
-             formatter.locale = Locale(identifier: "ja_JP")
-             formatter.dateFormat = "yyyy年MM月dd日"
-            self.date1 = datePicker.date
-            self.startDay = "\(formatter.string(from: datePicker.date))"
-            txt.text = self.startDay
-            
-         }
-        
-        alert.addButton("入力完了"){
-         if txt.text == "" {
-         } else {
-             
-            self.alertNo = 1
-            
-             let now = NSDate()
-            
-            let span = now.timeIntervalSince(self.date1)
-             let daySpan = Int((span/60/60/24))
-            
-            
-            
-            let userDefaults = UserDefaults.standard
-            userDefaults.set(daySpan,forKey: "daySpan")
-            userDefaults.set(self.startDay,forKey: "開始日")
-             //let yearOfDayspan = self.daySpan/365
-             //let dayOFDayspan = Int(fmod(Double(self.daySpan),365))
-             //self.localDayspan = "\(yearOfDayspan)年"+"\(dayOFDayspan)日"
-             alert.hideView()
-             self.loadView()
-             self.viewDidLoad()
-         }
-         }
-         alert.showEdit("開始日を入力する",subTitle:"オナ禁開始日を入力して下さい")
-    }
     
     
-    var pickerView: UIPickerView = UIPickerView()
-    let list = ["","1日", "2日", "3日", "4日", "5日", "7日", "10日", "14日", "20日", "30日","40日","50日","60日","70日","80日","90日","100日","150日","200日","300日"]
-    let goalDayArray = [0,1,2,3,4,5,7,10,14,20,30,40,50,60,70,80,90,100,150,200,300]
-    var stringChosedGoal = "10日"
-    var intChosedGoal = 10
-    var userDefaults = UserDefaults.standard
-    private var goalTxt : UITextField = UITextField()
     
-    
-    func userGoalAlert(){
-        
-        let timeAppearance = SCLAlertView.SCLAppearance(
-            showCloseButton: false,
-            shouldAutoDismiss: false
-        )
-        let timeAlert = SCLAlertView(appearance: timeAppearance)
-        let timeTxt = timeAlert.addTextField("ここをタップして下さい")
-        //１個目のpickerViewの処理
-        pickerView.delegate = self
-        pickerView.dataSource = self
-        
-        timeTxt.inputView = pickerView
-        timeAlert.addButton("目標日数を入力する"){
-            timeTxt.endEditing(true)
-            timeTxt.text = self.stringChosedGoal
-        }
-        timeAlert.addButton("入力完了"){
-            if timeTxt.text == "" {
-            } else {
-                self.alertNo = 2
-                self.userDefaults.set(self.intChosedGoal,forKey: "目標日数")
-               
-                let levelTime = self.intChosedGoal*24/11
-                self.userDefaults.set(levelTime,forKey: "レベルタイム")
-                
-                self.userDefaults.set(true,forKey: "onakinSwitch")
-                
-                timeAlert.hideView()
-                self.loadView()
-                self.viewDidLoad()
-            }
-        }
-        timeAlert.showEdit("目標日数を入力する",subTitle:"目標日数を入力して下さい")
-        
-    }
-    
-    
-    func timerStart(){
-        if let startValue : String = userDefaults.string(forKey: "start"){
-        date = startValue
-        let dateFormater = DateFormatter()
-        dateFormater.locale = Locale(identifier: "ja_JP")
-        dateFormater.dateFormat = "yyyy/MM/dd HH:mm:ss"
-        let dateString = dateFormater.date(from: date)
-        startTime = dateString!
-        timer = Timer.scheduledTimer(
-            
-            timeInterval : 1,
-            target: self,
-            selector: #selector(self.timerCounter),
-            userInfo:nil,
-            repeats:true
-        )
-        }
-    }
     
     
     
