@@ -13,7 +13,7 @@ import Accounts
 import SCLAlertView
 
 var sectionTitle = ["","",""]
-var section0 = ["開始日を変更する","難易度を変更する","手記を残す","記録を見る"]
+var section0 = ["開始日を変更する","難易度を変更する","過去の遺言を削除する","手記を残す","記録を見る"]
 var section1 = ["友人へ紹介する","このアプリを評価する"]
 var section2 = ["プライバシーポリシー","お問い合わせ・不具合報告"]
 
@@ -58,14 +58,24 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
             userGoalAlert()
             //2-1
         }else if (indexPath.section == 0) && (indexPath.row == 2){
-    
-              let storyboard: UIStoryboard = self.storyboard!
-                let nextView = storyboard.instantiateViewController(withIdentifier: "memoList") as! MemoListViewController
+            let alertView = SCLAlertView()
+            alertView.addButton("過去の遺言を削除する") {
+            let userDefaults = UserDefaults.standard
+            userDefaults.removeObject(forKey: "yuigon")
+           
+        
+            }
+            alertView.showWarning("遺言を削除", subTitle: "一度削除すると元には戻せません。")
+            
+        
+        }else if (indexPath.section == 0) && (indexPath.row == 3){
+            
+            let storyboard: UIStoryboard = self.storyboard!
+            let nextView = storyboard.instantiateViewController(withIdentifier: "memoList") as! MemoListViewController
             self.navigationController?.pushViewController(nextView, animated: true)
                 
-                
             
-        }else if (indexPath.section == 0) && (indexPath.row == 3){
+        }else if (indexPath.section == 0) && (indexPath.row == 4){
             let storyboard: UIStoryboard = self.storyboard!
                 let nextView = storyboard.instantiateViewController(withIdentifier: "record") as! RecordViewController
             self.navigationController?.pushViewController(nextView, animated: true)
