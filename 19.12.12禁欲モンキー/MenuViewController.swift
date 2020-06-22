@@ -13,7 +13,7 @@ import Accounts
 import SCLAlertView
 
 var sectionTitle = ["","",""]
-var section0 = ["開始日を変更する","目標日数を変更する","手記を残す","記録を見る"]
+var section0 = ["開始日を変更する","難易度を変更する","手記を残す","記録を見る"]
 var section1 = ["友人へ紹介する","このアプリを評価する"]
 var section2 = ["プライバシーポリシー","お問い合わせ・不具合報告"]
 
@@ -106,7 +106,7 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
         
         
         let appearance = SCLAlertView.SCLAppearance(
-             //showCloseButton: false,
+             showCloseButton: false,
              shouldAutoDismiss : false
          )
         let alert = SCLAlertView(appearance: appearance)
@@ -171,10 +171,10 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
     
     
     var pickerView: UIPickerView = UIPickerView()
-    let list = ["","1日", "2日", "3日", "4日", "5日", "7日", "10日", "14日", "20日", "30日","40日","50日","60日","70日","80日","90日","100日","150日","200日","300日"]
-    let goalDayArray = [0,1,2,3,4,5,7,10,14,20,30,40,50,60,70,80,90,100,150,200,300]
-    var stringChosedGoal = "10日"
-    var intChosedGoal = 10
+    let list = ["","30日(群れのボス)", "100日(ジャングルの王)", "300日(アフリカの王)"]
+    let goalDayArray = [0,30,100,300]
+    var stringChosedGoal = "30日"
+    var intChosedGoal = 30
     var userDefaults = UserDefaults.standard
     private var goalTxt : UITextField = UITextField()
     
@@ -182,7 +182,7 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
     func userGoalAlert(){
         
         let timeAppearance = SCLAlertView.SCLAppearance(
-            //showCloseButton: false,
+            showCloseButton: false,
             shouldAutoDismiss: false
         )
         let timeAlert = SCLAlertView(appearance: timeAppearance)
@@ -192,7 +192,7 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
         pickerView.dataSource = self
         
         timeTxt.inputView = pickerView
-        timeAlert.addButton("目標日数を入力する"){
+        timeAlert.addButton("難易度を変更する"){
             timeTxt.endEditing(true)
             timeTxt.text = self.stringChosedGoal
         }
@@ -200,9 +200,9 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
             if timeTxt.text == "" {
             } else {
                 
-                self.userDefaults.set(self.intChosedGoal,forKey: "目標日数")
+                self.userDefaults.set(self.intChosedGoal,forKey: "難易度")
                
-                let levelTime = self.intChosedGoal*24/11
+                let levelTime = self.intChosedGoal*24/10
                 self.userDefaults.set(levelTime,forKey: "レベルタイム")
                 
                 self.userDefaults.set(true,forKey: "onakinSwitch")
@@ -212,7 +212,7 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
                 self.viewDidLoad()
             }
         }
-        timeAlert.showEdit("目標日数を入力する",subTitle:"目標日数を入力して下さい")
+        timeAlert.showEdit("難易度を変更する",subTitle:"難易度を選択して下さい")
         
     }
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
