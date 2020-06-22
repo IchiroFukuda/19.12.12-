@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>331927739015-kefav9tso3pc4j7tirn50os86n5a42gj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.331927739015-kefav9tso3pc4j7tirn50os86n5a42gj</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAbybZTVTN9pE2YwAmI9quc5mTk3z8VQAM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>331927739015</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>jp.ichifukuro.onakin2</string>
+	<key>PROJECT_ID</key>
+	<string>stoicmonkey-69f24</string>
+	<key>STORAGE_BUCKET</key>
+	<string>stoicmonkey-69f24.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:331927739015:ios:f1b7366ed2abfb76f3f622</string>
+	<key>DATABASE_URL</key>
+	<string>https://stoicmonkey-69f24.firebaseio.com</string>
+</dict>
+</plist>
