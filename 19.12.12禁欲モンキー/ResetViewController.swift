@@ -12,6 +12,12 @@ class ResetViewController: UIViewController {
     
     var resultHandler : (() -> Void)?
     
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        //label.setLabel(title: R.string.localizable.mailAddress())
+        return label
+    }()
+    
     private lazy var yuigonLabel: UILabel = {
         let label = UILabel()
         //label.setLabel(title: R.string.localizable.mailAddress())
@@ -117,7 +123,7 @@ class ResetViewController: UIViewController {
         Timer.scheduledTimer(timeInterval: 4.0, target: self,selector: #selector(self.animation),userInfo: nil, repeats: true
         )
     }
-    
+    var num = 0
     @objc func animation(){
        
         
@@ -125,24 +131,38 @@ class ResetViewController: UIViewController {
         if let value : [String] = userDefaults.array(forKey: "yuigon") as? [String]{
             yuigonArray = value
         }
-        
-        yuigonLabel.text = yuigonArray.randomElement()
+        if num == yuigonArray.count - 1{
+            num = 0
+            print("num = 0")
+        } else {
+            num += 1
+        }
+        print(num)
+        yuigonLabel.text = yuigonArray[num]
         
         UIView.transition(with: yuigonLabel, duration: 1.0, options: [.transitionFlipFromLeft], animations: nil, completion: nil)
     }
     
     private func setupLayout() {
+        view.addSubview(titleLabel)
         view.addSubview(yuigonLabel)
         view.addSubview(resetButton)
          view.addSubview(decisionButton)
         
         let width = view.bounds.size.width
         let height = view.bounds.size.height
-        yuigonLabel.text = yuigonArray.randomElement()
+        
+        titleLabel.text = "過去の遺言"
+        titleLabel.frame = CGRect(x:0, y:height/10, width:width, height:height/10)
+        titleLabel.font = UIFont.systemFont(ofSize: height/15)
+        titleLabel.textAlignment = .left
+        titleLabel.numberOfLines = 0
+        
+        yuigonLabel.text = yuigonArray[0]
         yuigonLabel.frame = CGRect(x:0, y:height/4, width:width, height:height/4)
-        yuigonLabel.font = UIFont.systemFont(ofSize: height/40)
+        yuigonLabel.font = UIFont.systemFont(ofSize: height/30)
         yuigonLabel.textAlignment = .center
-        yuigonLabel.numberOfLines = 0
+        
         
         resetButton.setTitle("それでもリセットする", for: .normal)
                 resetButton.setTitleColor(.black, for: .normal)
@@ -156,14 +176,14 @@ class ResetViewController: UIViewController {
        
         //let image = UIImage(systemName: "envelope")
         //decisionButton.setBackgroundImage(image, for: .normal)
-        decisionButton.layer.borderWidth = 2
-        decisionButton.layer.borderColor = UIColor.systemRed.cgColor
-        decisionButton.layer.cornerRadius = height/40
-        decisionButton.setTitle("本当に辛い時に開く手紙", for: .normal)
-        //decisionButton.backgroundColor = UIColor(red: 0.3, green: 0.7, blue: 0.6, alpha: 1)
+        //decisionButton.layer.borderWidth = 2
+        //decisionButton.layer.borderColor = UIColor.systemRed.cgColor
+        decisionButton.layer.cornerRadius = height/30
+        decisionButton.setTitle("初心を見返す", for: .normal)
+        decisionButton.backgroundColor = UIColor(red: 232/256, green: 85/256, blue: 98/256, alpha: 1)
         decisionButton.titleLabel?.font = UIFont.systemFont(ofSize: view.bounds.size.height/30)
-        decisionButton.setTitleColor(UIColor.red, for: .normal)
-        decisionButton.frame = CGRect(x: width/2-height/4, y: height/2, width: height / 2, height: height / 20)
+        decisionButton.setTitleColor(UIColor.white, for: .normal)
+        decisionButton.frame = CGRect(x: 60, y: height*2/3, width: width-120, height: height / 15)
         
     }
     /*
