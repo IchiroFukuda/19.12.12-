@@ -16,6 +16,11 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
     //var subDate = "2016年10月3日"
     
      weak var timer : Timer!
+    
+    static var cancelSwitch = false
+    
+    
+    
     private lazy var startStopButton:UIButton = {
     let button = UIButton()
           button.addTarget(self, action: #selector(startStopButton(_:)), for: UIControl.Event.touchUpInside)
@@ -155,8 +160,13 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
                 userGoalAlert()
             }
             setupLayout()
+        
+        
+        
         // Do any additional setup after loading the view.
         }
+    
+    
     
     func timerStart(){
         if let startValue : String = userDefaults.string(forKey: "start"){
@@ -187,6 +197,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             userStartAlert()
             
         }else{
+            
             cancelAction()
         }
     }
@@ -272,10 +283,10 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
     }
     
     var pickerView: UIPickerView = UIPickerView()
-    let list = ["","1日", "2日", "3日", "4日", "5日", "7日", "10日", "14日", "20日", "30日","40日","50日","60日","70日","80日","90日","100日","150日","200日","300日"]
-    let goalDayArray = [0,1,2,3,4,5,7,10,14,20,30,40,50,60,70,80,90,100,150,200,300]
-    var stringChosedGoal = "10日"
-    var intChosedGoal = 10
+    let list = ["","30日(群れのボス)", "100日(ジャングルの王)", "300日(アフリカの王)"]
+    let goalDayArray = [0,30,100,300]
+    var stringChosedGoal = "30日"
+    var intChosedGoal = 30
     var userDefaults = UserDefaults.standard
     private var goalTxt : UITextField = UITextField()
     
@@ -293,7 +304,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         pickerView.dataSource = self
         
         timeTxt.inputView = pickerView
-        timeAlert.addButton("目標日数を入力する"){
+        timeAlert.addButton("難易度を設定する"){
             timeTxt.endEditing(true)
             timeTxt.text = self.stringChosedGoal
         }
@@ -301,9 +312,9 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             if timeTxt.text == "" {
             } else {
                 self.alertNo = 0
-                self.userDefaults.set(self.intChosedGoal,forKey: "目標日数")
+                self.userDefaults.set(self.intChosedGoal,forKey: "難易度")
                
-                let levelTime = self.intChosedGoal*24/11
+                let levelTime = self.intChosedGoal*24/10
                 self.userDefaults.set(levelTime,forKey: "レベルタイム")
                 
                 self.userDefaults.set(true,forKey: "onakinSwitch")
@@ -313,7 +324,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
                 self.viewDidLoad()
             }
         }
-        timeAlert.showEdit("目標日数を入力する",subTitle:"目標日数を入力して下さい")
+        timeAlert.showEdit("難易度を設定する",subTitle:"難易度を選択して下さい")
         
     }
     
@@ -321,81 +332,87 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
     
     
     func cancelAction (){
-        let alertController = UIAlertController(title: "リセット",message: "本当にリセットしますか？", preferredStyle: UIAlertController.Style.alert)
         
-       let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) { (action:UIAlertAction)  in
-         
-        if self.timer != nil{
-            self.timer.invalidate()
-           
-           }
+        performSegue(withIdentifier: "toReset", sender: nil)
         
-        let userDefaults = UserDefaults.standard
-        
-        var recordDic = ["日数":"","開始日":"","終了日":""]
-        
-        recordDic["日数"] = self.NumberOfDays
-        
-        recordDic["開始日"]  = self.startTimeLabelText
-        
-        
-        let onakinTime = Date()
-        let dateFormater = DateFormatter()
-        dateFormater.locale = Locale(identifier: "ja_JP")
-        dateFormater.dateFormat = "yyyy年MM月dd日"
-        let date = dateFormater.string(from: onakinTime)
-        
-        recordDic["終了日"] = date
-        
-        var recordArray = [Any]()
-        if userDefaults.array(forKey: "recordArray") != nil{
-            //取得 またas!でアンラップしているのでnilじゃない時のみ
-            recordArray = userDefaults.array(forKey: "recordArray")!
-            
-        }
-        
-        recordArray.append(recordDic)
-        
-        userDefaults.set(recordArray,forKey: "recordArray")
-    
-        userDefaults.removeObject(forKey: "start")
-        
-        userDefaults.removeObject(forKey: "daySpan")
-        
-        userDefaults.removeObject(forKey: "目標日数")
-        
-        userDefaults.removeObject(forKey: "レベルタイム")
-        
-        userDefaults.removeObject(forKey: "開始日")
-        
-        userDefaults.set(false,forKey: "onakinSwitch")
-        
-        let onakinSwitch = userDefaults.bool(forKey: "onakinSwitch")
-        print(onakinSwitch)
-        
-        self.startTimeLabelText = "未スタート"
-        self.timerDayText = "0"
-        self.onakinTimeText = ""
-        self.untilNextLevelText = ""
-        
-        
-        self.loadView()
-        self.viewDidLoad()
-        
-           return
-       }
-       
-       alertController.addAction(okAction)
-       
-       let cancelButton = UIAlertAction(title: "CANCEL", style: UIAlertAction.Style.cancel,handler: nil)
-       alertController.addAction(cancelButton)
-       
-       present(alertController, animated: true, completion : nil)
-       
        
     }
     
+    override func prepare(for segue: UIStoryboardSegue,sender: Any?){
+        if segue.identifier == "toReset" {
+                // 遷移先のViewControllerを取得
+                let next = segue.destination as? ResetViewController
+                // 遷移先のプロパティに処理ごと渡す
+                next?.resultHandler = {
+                    // 引数を使ってoutputLabelの値を更新する処理
+                    self.resetAction()
+                    
+                }
+            }
+        }
     
+    
+    func resetAction(){
+        
+        ViewController2.cancelSwitch = false
+        
+        if self.timer != nil{
+                self.timer.invalidate()
+               
+               }
+            
+            let userDefaults = UserDefaults.standard
+            
+            var recordDic = ["日数":"","開始日":"","終了日":""]
+            
+            recordDic["日数"] = self.NumberOfDays
+            
+            recordDic["開始日"]  = self.startTimeLabelText
+            
+            
+            let onakinTime = Date()
+            let dateFormater = DateFormatter()
+            dateFormater.locale = Locale(identifier: "ja_JP")
+            dateFormater.dateFormat = "yyyy年MM月dd日"
+            let date = dateFormater.string(from: onakinTime)
+            
+            recordDic["終了日"] = date
+            
+            var recordArray = [Any]()
+            if userDefaults.array(forKey: "recordArray") != nil{
+                //取得 またas!でアンラップしているのでnilじゃない時のみ
+                recordArray = userDefaults.array(forKey: "recordArray")!
+                
+            }
+            
+            recordArray.append(recordDic)
+            
+            userDefaults.set(recordArray,forKey: "recordArray")
+        
+            userDefaults.removeObject(forKey: "start")
+            
+            userDefaults.removeObject(forKey: "daySpan")
+            
+            userDefaults.removeObject(forKey: "難易度")
+            
+            userDefaults.removeObject(forKey: "レベルタイム")
+            
+            userDefaults.removeObject(forKey: "開始日")
+            
+            userDefaults.set(false,forKey: "onakinSwitch")
+            
+            let onakinSwitch = userDefaults.bool(forKey: "onakinSwitch")
+            print(onakinSwitch)
+            
+            self.startTimeLabelText = "未スタート"
+            self.timerDayText = "0"
+            self.onakinTimeText = ""
+            self.untilNextLevelText = ""
+            
+            
+            self.loadView()
+            self.viewDidLoad()
+    }
     
     
         private func setupLayout() {
@@ -446,14 +463,14 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             onakinTime.textAlignment = NSTextAlignment.center
             
             let userDefaults = UserDefaults.standard
-            var goalDate = userDefaults.integer(forKey: "目標日数")
+            var goalDate = userDefaults.integer(forKey: "難易度")
                  
-            if userDefaults.object(forKey: "目標日数") != nil {
-                goalDate = userDefaults.integer(forKey: "目標日数")
+            if userDefaults.object(forKey: "難易度") != nil {
+                goalDate = userDefaults.integer(forKey: "難易度")
             }
             
             goalDay.frame = CGRect(x:0, y:100+width*3/6, width:width, height:width/8)
-            goalDay.text = "目標日数:\(goalDate)日"
+            goalDay.text = "目標:\(goalDate)日"
             goalDay.font = UIFont.systemFont(ofSize: width/20)
             goalDay.numberOfLines = 1
             goalDay.textAlignment = NSTextAlignment.center
@@ -554,8 +571,8 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             if userDefaults.object(forKey: "レベルタイム") != nil {
                 levelTime = userDefaults.integer(forKey: "レベルタイム")
             }
-            if userDefaults.object(forKey: "目標日数") != nil {
-                goalDay = userDefaults.integer(forKey: "目標日数")
+            if userDefaults.object(forKey: "難易度") != nil {
+                goalDay = userDefaults.integer(forKey: "難易度")
             }
             
             if levelTime == 0 {
