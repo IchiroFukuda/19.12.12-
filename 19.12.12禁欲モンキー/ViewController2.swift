@@ -158,7 +158,9 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             }
             if alertNo == 1{
                 userGoalAlert()
-            }
+            } else if alertNo == 2 {
+                firstAmbition()
+        }
             setupLayout()
         
         
@@ -311,7 +313,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         timeAlert.addButton("入力完了"){
             if timeTxt.text == "" {
             } else {
-                self.alertNo = 0
+                self.alertNo = 2
                 self.userDefaults.set(self.intChosedGoal,forKey: "難易度")
                
                 let levelTime = self.intChosedGoal*24/10
@@ -328,6 +330,34 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         
     }
     
+    
+    func firstAmbition(){
+        
+       let appearance = SCLAlertView.SCLAppearance(
+                showCloseButton: false,
+                shouldAutoDismiss : false
+            )
+            let alert = SCLAlertView(appearance: appearance)
+            let txt = alert.addTextField("初心を刻む")
+            
+            alert.addButton("入力する"){
+            //テキストに何か書かれているか？
+                if txt.text != ""{
+                self.userDefaults.set(txt.text, forKey: "decision")
+                
+                }
+                self.alertNo = 0
+                alert.hideView()
+                self.loadView()
+                self.viewDidLoad()
+                
+            }
+            //alert.addButton("Show Name") {
+               // print("Text value: \(txt.text)")
+            //}
+            alert.showEdit("初志を刻む", subTitle: "リセットボタンを押す瀬戸際に、この言葉を見返すことができます。")
+            
+        }
     
     
     
@@ -398,6 +428,8 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             userDefaults.removeObject(forKey: "レベルタイム")
             
             userDefaults.removeObject(forKey: "開始日")
+        
+            userDefaults.removeObject(forKey: "decision")
             
             userDefaults.set(false,forKey: "onakinSwitch")
             
