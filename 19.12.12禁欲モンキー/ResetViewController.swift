@@ -23,7 +23,7 @@ class ResetViewController: UIViewController {
         //label.setLabel(title: R.string.localizable.mailAddress())
         return label
     }()
-    var yuigonArray = ["あなたは楽な道に進みますか？","このまま強い男への道を進みますか？"]
+    var yuigonArray = [String]()
     
     var userDefaults = UserDefaults.standard
     private lazy var resetButton:UIButton = {
@@ -33,7 +33,7 @@ class ResetViewController: UIViewController {
     }()
     
     @objc func resetButton(_ sender:UIButton) {
-        
+        self.num = 0
         let appearance = SCLAlertView.SCLAppearance(
             showCloseButton: false,
             shouldAutoDismiss : false
@@ -42,6 +42,14 @@ class ResetViewController: UIViewController {
         let txt = alert.addTextField("遺言を入力する")
         
         alert.addButton("リセットする"){
+            
+            let writingTime = Date()
+            //Date型の日付をStringに変換
+            let dateFormater = DateFormatter()
+            dateFormater.locale = Locale(identifier: "ja_JP")
+            dateFormater.dateFormat = "yyyy年MM月dd日HH時mm分ss秒"
+            let date = dateFormater.string(from: writingTime)
+            
         if UserDefaults.standard.array(forKey: "yuigon") != nil{
             //saveMemoArrayに取得
             var yuigonArray = self.userDefaults.array(forKey: "yuigon") as! [String]
@@ -49,7 +57,9 @@ class ResetViewController: UIViewController {
                 //テキストに何か書かれているか？
             if txt.text != ""{
             
-            yuigonArray.append(txt.text!)
+            
+            //let truncated = date.substring(to: endIndex)
+            yuigonArray.append(txt.text!+"(\(String(date.prefix(11))))")
                 self.userDefaults.set(yuigonArray, forKey: "yuigon")
             
             }else{
@@ -64,7 +74,7 @@ class ResetViewController: UIViewController {
             //nilを強制アンラップはエラーが出るから
             if txt.text != ""{
                 //inputtextはoptional型だから強制アンラップ
-                newMemoArray.append(txt.text!)
+                newMemoArray.append(txt.text!+"(\(String(date.prefix(11))))")
                 self.userDefaults.set(newMemoArray, forKey:  "yuigon")
 
              
@@ -72,6 +82,7 @@ class ResetViewController: UIViewController {
             
             }
         }
+            
             alert.hideView()
             self.dismiss(animated: true, completion:nil)
             if let handler = self.resultHandler{
@@ -130,17 +141,18 @@ class ResetViewController: UIViewController {
         
         if let value : [String] = userDefaults.array(forKey: "yuigon") as? [String]{
             yuigonArray = value
-        }
+        
         if num == yuigonArray.count - 1{
             num = 0
-            print("num = 0")
+            
         } else {
             num += 1
         }
-        print(num)
+        
         yuigonLabel.text = yuigonArray[num]
         
-        UIView.transition(with: yuigonLabel, duration: 1.0, options: [.transitionFlipFromLeft], animations: nil, completion: nil)
+        UIView.transition(with: yuigonLabel, duration: 1.0, options: [.transitionCrossDissolve], animations: nil, completion: nil)
+        }
     }
     
     private func setupLayout() {
@@ -158,10 +170,11 @@ class ResetViewController: UIViewController {
         titleLabel.textAlignment = .left
         titleLabel.numberOfLines = 0
         
-        yuigonLabel.text = yuigonArray[0]
+        yuigonLabel.text = "オナ禁すらできずして、何ができるのでしょうか？"
         yuigonLabel.frame = CGRect(x:0, y:height/4, width:width, height:height/4)
         yuigonLabel.font = UIFont.systemFont(ofSize: height/30)
         yuigonLabel.textAlignment = .center
+        yuigonLabel.numberOfLines = 0
         
         
         resetButton.setTitle("それでもリセットする", for: .normal)
