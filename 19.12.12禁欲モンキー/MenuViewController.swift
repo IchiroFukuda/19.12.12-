@@ -176,7 +176,7 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
              self.viewDidLoad()
          }
          }
-         alert.showEdit("開始日を入力する",subTitle:"オナ禁開始日を入力して下さい")
+         alert.showEdit("開始日を入力する",subTitle:"開始日を入力して下さい")
     }
     
     
