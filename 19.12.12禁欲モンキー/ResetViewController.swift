@@ -170,7 +170,7 @@ class ResetViewController: UIViewController {
         titleLabel.textAlignment = .left
         titleLabel.numberOfLines = 0
         
-        yuigonLabel.text = "オナ禁すらできずして、何ができるのでしょうか？"
+        yuigonLabel.text = "禁欲すらできずして、何ができるのでしょうか？"
         yuigonLabel.frame = CGRect(x:0, y:height/4, width:width, height:height/4)
         yuigonLabel.font = UIFont.systemFont(ofSize: height/30)
         yuigonLabel.textAlignment = .center
