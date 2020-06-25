@@ -59,7 +59,7 @@ class ViewController4: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad")
+        
         /*
         let userDefaults = UserDefaults.standard
         let onakinSwitch = userDefaults.bool(forKey: "onakinSwitch")
@@ -93,7 +93,7 @@ class ViewController4: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        print("viewWillAppear")
+      
         let userDefaults = UserDefaults.standard
         let onakinSwitch = userDefaults.bool(forKey: "onakinSwitch")
         
@@ -141,7 +141,7 @@ class ViewController4: UIViewController {
          let resizedCellImage = image?.reSizeImage(reSize: reSize)
         */
          imageView.image = image
-        print("monkeyname:\(monkeyName)")
+        
          self.view.addSubview(imageView)
     }
 
@@ -163,7 +163,7 @@ class ViewController4: UIViewController {
         }
          let currentTime = Date().timeIntervalSince(startTime)
         
-        let day = (Int)(fmod((currentTime/86400),365))
+        let day =  (Int)(fmod((currentTime/86400),365))
         
         var daySpan = 0
         
@@ -239,12 +239,12 @@ class ViewController4: UIViewController {
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("viewWillDisappear")
+        
         imageView.removeFromSuperview()
     }
     override func viewDidDisappear(_ animated: Bool) {
        super.viewWillDisappear(animated)
-       print("viewdidDisappear")
+       
     }
     
 }
