@@ -37,7 +37,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         tapSwitch = false
         self.loadView()
         self.viewDidLoad()
-        print(tapSwitch)
+        
     }
     */
     /*
@@ -47,7 +47,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         self.loadView()
         self.viewDidLoad()
 
-        print(tapSwitch)
+        
     }
     */
     private lazy var timerDay: UILabel = {
@@ -140,7 +140,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-            print("ロードされる")
+           
             
             circleImage()
         
@@ -153,7 +153,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         
         
             if onakinSwitch == true{
-                print("trueの時の処理")
+               
             timerStart()
             }
             if alertNo == 1{
@@ -353,7 +353,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
                 
             }
             //alert.addButton("Show Name") {
-               // print("Text value: \(txt.text)")
+               
             //}
             alert.showEdit("初志を刻む", subTitle: "リセットボタンを押す瀬戸際に、この言葉を見返すことができます。")
             
@@ -434,7 +434,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             userDefaults.set(false,forKey: "onakinSwitch")
             
             let onakinSwitch = userDefaults.bool(forKey: "onakinSwitch")
-            print(onakinSwitch)
+            
             
             self.startTimeLabelText = "未スタート"
             self.timerDayText = "0"
@@ -549,7 +549,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         self.loadView()
         self.viewDidLoad()
 
-        print(tapSwitch)
+   
     }
 
         
@@ -564,7 +564,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         var finishDate = ""
         //記録用
         @objc func timerCounter(){
-            print("startTime\(startTime)")
+            
             
             let currentTime = Date().timeIntervalSince(startTime)
            
@@ -572,7 +572,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             let hour = (Int)(fmod((currentTime/3600),24))
             let minute = (Int)(fmod((currentTime/60),60))
             //let second = (Int)(fmod(currentTime,60))
-            print("day\(day)")
+            
             let sHour = String(format:"%02d",hour)
             let sMinute = String(format:"%02d",minute)
             //let sSecond = String(format:"%02d",second)
@@ -590,7 +590,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
                 
                 daySpan = userDefaults.integer(forKey: "daySpan")
             }
-            print("dayspan\(daySpan)")
+            
             
             timerDayText = "\(1 + day + daySpan)"
             NumberOfDays = "\(day+daySpan)"
