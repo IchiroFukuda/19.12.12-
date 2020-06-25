@@ -47,7 +47,7 @@ class MemoListViewController: UIViewController,UITableViewDataSource,UITableView
         nextView.indexPath = indexPath.row
         self.navigationController?.pushViewController(nextView, animated: true)
         //self.performSegue(withIdentifier: "toDetail", sender: nil)
-        print(nextView.indexPath)
+       
         //押したら押した状態を解除
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -57,7 +57,7 @@ class MemoListViewController: UIViewController,UITableViewDataSource,UITableView
         memoTableView.dataSource = self
         
         
-        //print("checkpoint1"+"\(category)")
+       
         // Do any additional setup after loading the view.
     }
     
