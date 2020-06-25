@@ -92,7 +92,7 @@ class ResetViewController: UIViewController {
             
         }
         //alert.addButton("Show Name") {
-           // print("Text value: \(txt.text)")
+           
         //}
         alert.showEdit("遺言を入力する", subTitle: "")
         
