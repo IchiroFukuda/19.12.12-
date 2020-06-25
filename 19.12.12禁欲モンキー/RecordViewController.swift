@@ -57,7 +57,7 @@ class RecordViewController: UIViewController,UITableViewDataSource,UITableViewDe
         recordTableView.dataSource = self
         
         
-        //print("checkpoint1"+"\(category)")
+        
         // Do any additional setup after loading the view.
     }
     
