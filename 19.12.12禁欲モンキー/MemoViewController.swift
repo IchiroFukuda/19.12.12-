@@ -39,12 +39,12 @@ class MemoViewController: UIViewController,UITextViewDelegate  {
     override func viewDidLoad() {
         super.viewDidLoad()
         mailInputField.delegate = self
-       // print("checkpoint2:"+"\(category)")
-       // print("checkpoint3:"+"\(indexPath)")
+       
+      
         
         setupLayout()
         
-        //print("checkpoint4:"+"\(memoKey)"+"\(dateKey)")
+        
         // Do any additional setup after loading the view.
     }
     override func didReceiveMemoryWarning() {
@@ -108,13 +108,12 @@ class MemoViewController: UIViewController,UITextViewDelegate  {
         
      
        /* saveButton.leadingAnchor.constraint(equalTo:view.leadingAnchor,constant:ViewConst.textFieldLeft).isActive = true
-        print(view.leftAnchor)
+       
         saveButton.bottomAnchor.constraint(equalTo:view.bottomAnchor, constant:20).isActive = true
         
        saveButton.widthAnchor.constraint(equalToConstant: view.bounds.size.width-80).isActive = true
         saveButton.heightAnchor.constraint(equalToConstant: view.bounds.size.height/6).isActive = true
-        print(view.bounds.size.width)
- */
+       */
 //image---------------------------------------------
        //commentlabel------------------------------------------------------------
         
