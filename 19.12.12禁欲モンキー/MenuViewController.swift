@@ -41,12 +41,17 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
         
         return cell
     }
-    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
     // Do any additional setup after loading the view.
+    
+    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //0-0
@@ -82,9 +87,15 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
             
         }else if (indexPath.section == 1) && (indexPath.row == 0){
             
+            let width = view.bounds.size.width
+            let height = view.bounds.size.height
+            
             let shareWebsite = NSURL(string: "https://itunes.apple.com/us/app/%E3%82%B7%E3%83%B3%E3%82%B0%E3%83%AB%E3%82%BF%E3%82%B9%E3%82%AF/id1454994773?l=ja&ls=1&mt=8")!
             _ = [shareWebsite]
             let controller = UIActivityViewController(activityItems: [""], applicationActivities: nil)
+           
+            controller.popoverPresentationController?.sourceView = self.view;
+            controller.popoverPresentationController?.sourceRect = CGRect(x: 100, y: 200, width: width/5, height: height/5)
             self.present(controller, animated: true, completion: nil)
             
         }else if (indexPath.section == 1) && (indexPath.row == 1){
