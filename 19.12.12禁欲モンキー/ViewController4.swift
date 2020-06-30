@@ -164,6 +164,7 @@ class ViewController4: UIViewController {
          let currentTime = Date().timeIntervalSince(startTime)
         
         let day =  (Int)(fmod((currentTime/86400),365))
+        let hour = (Int)(fmod((currentTime/3600),24))
         
         var daySpan = 0
         
@@ -175,7 +176,7 @@ class ViewController4: UIViewController {
         if userDefaults.object(forKey: "レベルタイム") != nil {
             levelTime = userDefaults.integer(forKey: "レベルタイム")
         
-        level = (day + daySpan)*24 / levelTime
+        level = ((day + daySpan)*24 + hour)  / levelTime
         }
         if level > 11{
         return 11
