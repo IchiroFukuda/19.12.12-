@@ -473,7 +473,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             
             
             let width = view.bounds.size.width
-            
+            print(width)
             
             
             timerDay.frame = CGRect(x:0, y:100, width:width, height:width)
