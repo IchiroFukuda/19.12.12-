@@ -106,6 +106,16 @@ class ResetViewController: UIViewController {
     @objc func tapDecisionButton(_ sender:UIButton) {
            showAlert()
        }
+    
+    private lazy var backButton:UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(tapBackButton(_:)), for: UIControl.Event.touchUpInside)
+        return button
+    }()
+    @objc func tapBackButton(_ sender:UIButton) {
+          self.dismiss(animated: true, completion:nil)
+       }
+
     func showAlert(){
         
         
@@ -160,10 +170,11 @@ class ResetViewController: UIViewController {
         view.addSubview(yuigonLabel)
         view.addSubview(resetButton)
          view.addSubview(decisionButton)
+        view.addSubview(backButton)
         
-        let width = view.bounds.size.width
-        let height = view.bounds.size.height
-        
+        let width = self.view.frame.size.width
+        let height = self.view.frame.size.height
+        print(width)
         titleLabel.text = "過去の遺言"
         titleLabel.frame = CGRect(x:0, y:height/10, width:width, height:height/10)
         titleLabel.font = UIFont.systemFont(ofSize: height/15)
@@ -171,7 +182,9 @@ class ResetViewController: UIViewController {
         titleLabel.numberOfLines = 0
         
         yuigonLabel.text = "禁欲すらできずして、何ができるのでしょうか？"
-        yuigonLabel.frame = CGRect(x:0, y:height/4, width:width, height:height/4)
+        
+        yuigonLabel.frame.size = CGSize(width:width*4/5, height:height/4)//, width:width, height:height/4)
+        yuigonLabel.center = CGPoint(x: width/2, y: height/3)
         yuigonLabel.font = UIFont.systemFont(ofSize: height/30)
         yuigonLabel.textAlignment = .center
         yuigonLabel.numberOfLines = 0
@@ -182,9 +195,9 @@ class ResetViewController: UIViewController {
                 resetButton.layer.borderWidth = 2
                 resetButton.layer.borderColor = UIColor.gray.cgColor
                 resetButton.layer.cornerRadius = 10
-        resetButton.titleLabel?.font = UIFont.systemFont(ofSize: view.bounds.size.height/40)
+        resetButton.titleLabel?.font = UIFont.systemFont(ofSize: view.bounds.size.height/50)
                 resetButton.setTitleColor(UIColor.gray, for: .normal)
-                resetButton.frame = CGRect(x: 80, y: view.bounds.size.height*5/6, width: self.view.frame.width-160, height: self.view.frame.height / 20)
+                resetButton.frame = CGRect(x: width/2-width/3, y: view.bounds.size.height*5/6, width: width*2/3, height: self.view.frame.height / 20)
         
        
         //let image = UIImage(systemName: "envelope")
@@ -196,7 +209,15 @@ class ResetViewController: UIViewController {
         decisionButton.backgroundColor = UIColor(red: 232/256, green: 85/256, blue: 98/256, alpha: 1)
         decisionButton.titleLabel?.font = UIFont.systemFont(ofSize: view.bounds.size.height/30)
         decisionButton.setTitleColor(UIColor.white, for: .normal)
-        decisionButton.frame = CGRect(x: 60, y: height*2/3, width: width-120, height: height / 15)
+        decisionButton.frame = CGRect(x: width/2-width/3, y: height*0.6, width: width*2/3, height: height / 15)
+        
+        backButton.layer.cornerRadius = height/30
+        backButton.setTitle("戻る", for: .normal)
+        backButton.backgroundColor = UIColor(red: 0/256, green: 104/256, blue: 178/256, alpha: 1)
+        backButton.titleLabel?.font = UIFont.systemFont(ofSize: view.bounds.size.height/30)
+        backButton.setTitleColor(UIColor.white, for: .normal)
+        backButton.frame = CGRect(x: width/2-width/3, y: height*0.7, width: width*2/3, height: height / 15)
+        
         
     }
     /*
