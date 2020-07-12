@@ -81,6 +81,7 @@ class ResetViewController: UIViewController {
             }else{
             
             }
+            
         }
             
             alert.hideView()
@@ -91,9 +92,11 @@ class ResetViewController: UIViewController {
             ViewController2.cancelSwitch = true
             
         }
-        //alert.addButton("Show Name") {
-           
-        //}
+        
+        alert.addButton("やっぱり戻る"){
+            alert.hideView()
+        }
+        
         alert.showEdit("遺言を入力する", subTitle: "")
         
     }
