@@ -7,8 +7,11 @@
 //
 import UIKit
 import SCLAlertView
-class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource,UITextFieldDelegate,UIGestureRecognizerDelegate {
+import GoogleMobileAds
+
+class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource,UITextFieldDelegate,UIGestureRecognizerDelegate,GADBannerViewDelegate {
    
+    var bannerView: DFPBannerView!
     
     var startTime = Date()
     
@@ -164,11 +167,39 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             setupLayout()
         
         
+           
+        bannerView = DFPBannerView(adSize: kGADAdSizeBanner)
+        addBannerViewToView(bannerView)
+        bannerView.adUnitID = "ca-app-pub-4140004931657336/9584127894"
+        //bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+        bannerView.rootViewController = self
+        bannerView.load(DFPRequest())
+        bannerView.delegate = self
+        
         
         // Do any additional setup after loading the view.
         }
     
-    
+    func addBannerViewToView(_ bannerView: DFPBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        view.addConstraints(
+            [NSLayoutConstraint(item: bannerView,
+                                attribute: .top,
+                                relatedBy: .equal,
+                                toItem: view.safeAreaLayoutGuide,
+                                attribute: .top,
+                                multiplier: 1,
+                                constant: 0),
+             NSLayoutConstraint(item: bannerView,
+                                attribute: .centerX,
+                                relatedBy: .equal,
+                                toItem: view,
+                                attribute: .centerX,
+                                multiplier: 1,
+                                constant: 0)
+            ])
+    }
     
     func timerStart(){
         if let startValue : String = userDefaults.string(forKey: "start"){
