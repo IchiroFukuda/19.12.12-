@@ -187,6 +187,9 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
              self.viewDidLoad()
          }
          }
+        alert.addButton("何もせず戻る"){
+            alert.hideView()
+        }
          alert.showEdit("開始日を入力する",subTitle:"開始日を入力して下さい")
     }
     
@@ -232,6 +235,9 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
                 self.loadView()
                 self.viewDidLoad()
             }
+        }
+        timeAlert.addButton("何もせず戻る"){
+            timeAlert.hideView()
         }
         timeAlert.showEdit("難易度を変更する",subTitle:"難易度を選択して下さい")
         
