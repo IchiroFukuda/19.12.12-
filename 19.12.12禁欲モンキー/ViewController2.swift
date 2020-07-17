@@ -13,16 +13,11 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
    
     var bannerView: DFPBannerView!
     
-    var startTime = Date()
     
-    var date = "2016/10/3 12:12:12"
-    //var subDate = "2016年10月3日"
     
      weak var timer : Timer!
     
     static var cancelSwitch = false
-    
-    
     
     private lazy var startStopButton:UIButton = {
     let button = UIButton()
@@ -35,36 +30,16 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
     //@IBOutlet weak var timerSecond: UILabel!
     
     var tapSwitch = true
-    /*
-    @IBAction func tapSwitch(_ sender: Any) {
-        tapSwitch = false
-        self.loadView()
-        self.viewDidLoad()
-        
-    }
-    */
-    /*
-    @IBAction func tapTest(_ sender: UITapGestureRecognizer) {
-        tapSwitch = !tapSwitch
-        
-        self.loadView()
-        self.viewDidLoad()
-
-        
-    }
-    */
+    
     private lazy var timerDay: UILabel = {
         let label = UILabel()
-        
-        
-        //label.setLabel(title: R.string.localizable.mailAddress())
         
         return label
     }()
     
     
     func circleImage(){
-        // ⦿ UIViewの上にUIImageViewを貼り付けます。
+        
          let width = view.bounds.size.width
         
          let image = UIImage(named: "circle")
@@ -201,13 +176,16 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             ])
     }
     
+    var startTime = Date()
+    
+    var date = "2016/10/3 12:12:12"
+    
     func timerStart(){
         if let startValue : String = userDefaults.string(forKey: "start"){
-        date = startValue
         let dateFormater = DateFormatter()
         dateFormater.locale = Locale(identifier: "ja_JP")
         dateFormater.dateFormat = "yyyy/MM/dd HH:mm:ss"
-        let dateString = dateFormater.date(from: date)
+        let dateString = dateFormater.date(from: startValue)
         startTime = dateString!
         timer = Timer.scheduledTimer(
             
@@ -238,11 +216,11 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
     func startAction(){
              let userDefaults = UserDefaults.standard
      
-             startTime = Date()
+             
              let dateFormater = DateFormatter()
              dateFormater.locale = Locale(identifier: "ja_JP")
              dateFormater.dateFormat = "yyyy/MM/dd HH:mm:ss"
-             let date = dateFormater.string(from: startTime)
+             let date = dateFormater.string(from: Date())
     
              userDefaults.set(date,forKey: "start")
          
@@ -257,9 +235,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
     var date1 = Date()
     
     func userStartAlert(){
-        
-       
-        
+     
         let appearance = SCLAlertView.SCLAppearance(
              showCloseButton: false,
              shouldAutoDismiss : false
@@ -290,6 +266,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         
         alert.addButton("入力完了"){
          if txt.text == "" {
+            //開始日を入力してくださいってアラートが下から出るといいかも。
          } else {
              
             self.alertNo = 1
@@ -316,10 +293,10 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
     }
     
     var pickerView: UIPickerView = UIPickerView()
-    let list = ["","30日(群れのボス)", "100日(ジャングルの王)", "300日(アフリカの王)"]
-    let goalDayArray = [0,30,100,300]
-    var stringChosedGoal = "30日"
-    var intChosedGoal = 30
+    let list = ["","10日","20日","30日","40日","50日","60日","70日","80日","90日","100日","150日","200日","300日"]
+    let goalDayArray = [0,10,20,30,40,50,60,70,80,90,100,150,200,300]
+    var stringChosedGoal = "10日"
+    var intChosedGoal = 10
     var userDefaults = UserDefaults.standard
     private var goalTxt : UITextField = UITextField()
     
@@ -504,7 +481,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             
             
             let width = view.bounds.size.width
-            print(width)
+            
             
             
             timerDay.frame = CGRect(x:0, y:100, width:width, height:width)
@@ -596,10 +573,23 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         //記録用
         @objc func timerCounter(){
             
+            let f = DateFormatter()
+            f.dateStyle = .short
+            f.timeStyle = .none
+            f.locale = Locale(identifier: "ja_JP")
+            let strStartTime = f.string(from: startTime)
+            f.dateFormat = "yyyy/MM/dd"
+            var mutCurrentTime : TimeInterval = 0
+            if let mutStartTime = f.date(from: strStartTime) {
+              mutCurrentTime = Date().timeIntervalSince(mutStartTime)
+                print("strStartTime:\(strStartTime)")
+                print("mutStartTime:\(mutStartTime)")
+                
+            }
             
             let currentTime = Date().timeIntervalSince(startTime)
-           
-            var day = (Int)(fmod((currentTime/86400),365))
+            
+            let day = (Int)(fmod((currentTime/86400),365))
             let hour = (Int)(fmod((currentTime/3600),24))
             let minute = (Int)(fmod((currentTime/60),60))
             //let second = (Int)(fmod(currentTime,60))
@@ -640,15 +630,18 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             
             if levelTime == 0 {
             }else{
-            let doubleDayHour : Double = (Double)(((day+daySpan)*24)+hour)
-            let doubleLevelTime : Double = (Double)(levelTime)
-            let doubleNowLevelTime = fmod((doubleDayHour),doubleLevelTime)
-            let intNowLevelTime = (Int)(doubleNowLevelTime)
-            let untilNextLevel = levelTime-intNowLevelTime
+            let mutatedDay = (Int)(fmod((mutCurrentTime/86400),365))
+            let mutatedHour = (Int)(fmod((mutCurrentTime/3600),24))
+            let doubled : Double = (Double)(((mutatedDay+daySpan)*24)+mutatedHour)
+            let doubledLT : Double = (Double)(levelTime)
+            let passedLT = fmod((doubled),doubledLT)
+            let inted = (Int)(passedLT)
+            let untilNextLevel = levelTime-inted
+            print("inted:\(inted)"+",untilNextLevel:\(untilNextLevel)")
+            print("currentTime:\(currentTime)"+",mutCurrentTime:\(mutCurrentTime)")
+                
             
-            
-            
-            if goalDay > (day+daySpan){
+            if goalDay > (mutatedDay+daySpan){
                 untilNextLevelText = "次のレベルまで:\(untilNextLevel/24)日\(untilNextLevel-((untilNextLevel/24)*24))時間"
             } else {
                      untilNextLevelText = "目標達成"
