@@ -13,7 +13,7 @@ import Accounts
 import SCLAlertView
 
 var sectionTitle = ["","",""]
-var section0 = ["開始日を変更する","難易度を変更する","過去の遺言を削除する","手記を残す","記録を見る"]
+var section0 = ["開始日を変更する","目標日数を変更する","過去の遺言を削除する","手記を残す","記録を見る"]
 var section1 = ["友人へ紹介する","このアプリを評価する"]
 var section2 = ["プライバシーポリシー","お問い合わせ・不具合報告"]
 
@@ -216,7 +216,7 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
         pickerView.dataSource = self
         
         timeTxt.inputView = pickerView
-        timeAlert.addButton("難易度を変更する"){
+        timeAlert.addButton("目標日数を変更する"){
             timeTxt.endEditing(true)
             timeTxt.text = self.stringChosedGoal
         }
@@ -239,7 +239,7 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
         timeAlert.addButton("何もせず戻る"){
             timeAlert.hideView()
         }
-        timeAlert.showEdit("難易度を変更する",subTitle:"難易度を選択して下さい")
+        timeAlert.showEdit("目標日数を変更する",subTitle:"目標日数を選択して下さい")
         
     }
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
