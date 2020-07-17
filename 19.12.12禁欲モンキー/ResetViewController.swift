@@ -177,7 +177,7 @@ class ResetViewController: UIViewController {
         
         let width = self.view.frame.size.width
         let height = self.view.frame.size.height
-        print(width)
+       
         titleLabel.text = "過去の遺言"
         titleLabel.frame = CGRect(x:0, y:height/10, width:width, height:height/10)
         titleLabel.font = UIFont.systemFont(ofSize: height/15)
