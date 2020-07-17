@@ -314,7 +314,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         pickerView.dataSource = self
         
         timeTxt.inputView = pickerView
-        timeAlert.addButton("難易度を設定する"){
+        timeAlert.addButton("目標日数を設定する"){
             timeTxt.endEditing(true)
             timeTxt.text = self.stringChosedGoal
         }
@@ -334,7 +334,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
                 self.viewDidLoad()
             }
         }
-        timeAlert.showEdit("難易度を設定する",subTitle:"難易度を選択して下さい")
+        timeAlert.showEdit("目標日数を変更する",subTitle:"目標日数を選択して下さい")
         
     }
     
@@ -431,7 +431,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             
             userDefaults.removeObject(forKey: "daySpan")
             
-            userDefaults.removeObject(forKey: "難易度")
+            userDefaults.removeObject(forKey: "目標日数")
             
             userDefaults.removeObject(forKey: "レベルタイム")
             
