@@ -195,10 +195,10 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
     
     
     var pickerView: UIPickerView = UIPickerView()
-    let list = ["","30日(群れのボス)", "100日(ジャングルの王)", "300日(アフリカの王)"]
-    let goalDayArray = [0,30,100,300]
-    var stringChosedGoal = "30日"
-    var intChosedGoal = 30
+    let list = ["", "10日","20日","30日","40日","50日","60日","70日","80日","90日","100日","150日","200日","300日"]
+    let goalDayArray = [0,10,20,30,40,50,60,70,80,90,100,150,200,300]
+    var stringChosedGoal = "10日"
+    var intChosedGoal = 10
     var userDefaults = UserDefaults.standard
     private var goalTxt : UITextField = UITextField()
     
