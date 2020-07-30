@@ -166,18 +166,21 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
                    dateFormater.dateFormat = "yyyy/MM/dd HH:mm:ss"
                    dateStartDay = dateFormater.date(from: date)!
                    
-                  
+                  //開始日をここでdate型で取り出している。
             }
             
            
             
-            let span = dateStartDay.timeIntervalSince(self.date1)
-             let daySpan = Int((span/60/60/24))
+            let span = dateStartDay.timeIntervalSince(self.date1)//開始日から選択した日の差。マイナスになり得る。
+            if span < 0 { self.errorAction() }else{
+             let dayGap = Int((span/60/60/24))
             
-            
+            print("dayGap:\(dayGap)")
+                print("span:\(span)")
+            print("self.startDay:\(self.startDay)")
             
             let userDefaults = UserDefaults.standard
-            userDefaults.set(daySpan,forKey: "daySpan")
+            userDefaults.set(dayGap,forKey: "dayGap")
             userDefaults.set(self.startDay,forKey: "開始日")
              //let yearOfDayspan = self.daySpan/365
              //let dayOFDayspan = Int(fmod(Double(self.daySpan),365))
@@ -185,6 +188,7 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
              alert.hideView()
              self.loadView()
              self.viewDidLoad()
+            }
          }
          }
         alert.addButton("何もせず戻る"){
@@ -259,7 +263,9 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
         intChosedGoal = goalDayArray[row]
         self.goalTxt.text = list[row]
     }
-    
+    func errorAction(){
+        SCLAlertView().showError("Error", subTitle: "オナ禁ボタンを押した日より開始日が遅いようです。リセットボタンを押してください。")
+    }
     /*
      func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
      switch result {
