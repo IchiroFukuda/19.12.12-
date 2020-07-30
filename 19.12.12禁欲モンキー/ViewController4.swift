@@ -15,6 +15,28 @@ class ViewController4: UIViewController {
     
     static var myLevel = 0
     
+    
+    @IBAction func tapGesture(_ sender: UITapGestureRecognizer) {
+        
+        ViewController4.textPage += 1
+            if ViewController4.textPage > 9 {
+                ViewController4.textPage = 1
+            }
+            
+            //csvの文章を読み込む処理
+            csvDataManager.sharedInstance.loadData()
+            
+        //csvの文章を取り出す処理。DataにはmuramuraDataクラスのインスタンスが入る。これはもう金型じゃなくて鯛焼きであり、鯛焼きの中にあんこが入った状態。
+            guard let Data = csvDataManager.sharedInstance.nextData()
+                else {
+                    return
+            }
+            
+            //nextData()で、sentenceValueにはもう文が入っている。
+            csvLabel.text = "\(Data.sentenceValue)"
+            
+    }
+    /*
     @IBAction func upSwipe(_ sender: UISwipeGestureRecognizer) {
         
         ViewController4.textPage += 1
@@ -56,7 +78,7 @@ class ViewController4: UIViewController {
         
         csvLabel.text = "\(Data.sentenceValue)"
     }
-    
+    */
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -161,23 +183,47 @@ class ViewController4: UIViewController {
                let dateString = dateFormater.date(from: date)
                startTime = dateString!
         }
-         let currentTime = Date().timeIntervalSince(startTime)
+         let f = DateFormatter()
+        f.dateStyle = .short
+        f.timeStyle = .none
+        f.locale = Locale(identifier: "ja_JP")
+        f.dateFormat = "yyyy/MM/dd"
         
-        let day =  (Int)(fmod((currentTime/86400),365))
-        let hour = (Int)(fmod((currentTime/3600),24))
+        let strStartTime = f.string(from: startTime)
+       
         
-        var daySpan = 0
+         var mutCurrentTime : TimeInterval = 0
+        if let mutStartTime = f.date(from: strStartTime) {
+            mutCurrentTime = Date().timeIntervalSince(mutStartTime)
+                       // print("strStartTime:\(strStartTime)")
+        //print("mutStartTime:\(mutStartTime)")
+                        
+        }
         
-        if userDefaults.object(forKey: "daySpan") != nil {
-            daySpan = userDefaults.integer(forKey: "daySpan")
+     
+        
+        let day =  (Int)(fmod((mutCurrentTime/86400),365))
+        let hour = (Int)(fmod((mutCurrentTime/3600),24))
+       
+        
+        var dayGap = 0
+        
+        if userDefaults.object(forKey: "dayGap") != nil {
+            dayGap = userDefaults.integer(forKey: "dayGap")
         }
         var levelTime = 0
         var level = 0
         if userDefaults.object(forKey: "レベルタイム") != nil {
             levelTime = userDefaults.integer(forKey: "レベルタイム")
         
-        level = ((day + daySpan)*24 + hour)  / levelTime
+        level = ((day + dayGap)*24 + hour)  / levelTime
         }
+        print("day:\(day)")
+        print("dayGap:\(dayGap)")
+        print("hour:\(hour)")
+        print("levelTime:\(levelTime)")
+        print("level:\(level)")
+        
         if level > 11{
         return 11
         } else{
