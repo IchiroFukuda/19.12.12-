@@ -273,17 +273,17 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             
              let now = NSDate()
             
-            let span = now.timeIntervalSince(self.date1)
-             let daySpan = Int((span/60/60/24))
+            let span = now.timeIntervalSince(self.date1)//現在と、開始日との差、、、この開始日は、０時！
+             let dayGap = Int((span/60/60/24))
             
             
             
             let userDefaults = UserDefaults.standard
-            userDefaults.set(daySpan,forKey: "daySpan")
+            userDefaults.set(dayGap,forKey: "dayGap")
             userDefaults.set(self.startDay,forKey: "開始日")
-             //let yearOfDayspan = self.daySpan/365
-             //let dayOFDayspan = Int(fmod(Double(self.daySpan),365))
-             //self.localDayspan = "\(yearOfDayspan)年"+"\(dayOFDayspan)日"
+             //let yearOfDayGap = self.dayGap/365
+             //let dayOFDayGap= Int(fmod(Double(self.dayGap),365))
+             //self.localDayGap = "\(yearOfDayGap)年"+"\(dayOFDayGap)日"
              alert.hideView()
              self.loadView()
              self.viewDidLoad()
@@ -429,7 +429,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         
             userDefaults.removeObject(forKey: "start")
             
-            userDefaults.removeObject(forKey: "daySpan")
+            userDefaults.removeObject(forKey: "dayGap")
             
             userDefaults.removeObject(forKey: "目標日数")
             
@@ -582,8 +582,8 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             var mutCurrentTime : TimeInterval = 0
             if let mutStartTime = f.date(from: strStartTime) {
               mutCurrentTime = Date().timeIntervalSince(mutStartTime)
-                print("strStartTime:\(strStartTime)")
-                print("mutStartTime:\(mutStartTime)")
+               // print("strStartTime:\(strStartTime)")
+//print("mutStartTime:\(mutStartTime)")
                 
             }
             
@@ -605,19 +605,19 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
               }
             startTimeLabelText = "開始日:"+startDate
             
-            var daySpan = 0
+            var dayGap = 0
           
-            if userDefaults.object(forKey: "daySpan") != nil {
+            if userDefaults.object(forKey: "dayGap") != nil {
                 
-                daySpan = userDefaults.integer(forKey: "daySpan")
+                dayGap = userDefaults.integer(forKey: "dayGap")
             }
             
             
-            timerDayText = "\(1 + day + daySpan)"
-            NumberOfDays = "\(day+daySpan)"
+            timerDayText = "\(1 + day + dayGap)"
+            NumberOfDays = "\(day+dayGap)"
             
             
-            onakinTimeText = "禁欲時間:"+"\(day + daySpan)日"+"\(sHour)時間"+"\(sMinute)分"
+            onakinTimeText = "禁欲時間:"+"\(day + dayGap)日"+"\(sHour)時間"+"\(sMinute)分"
             
             var levelTime = 0
             var goalDay = 0
@@ -632,17 +632,19 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             }else{
             let mutatedDay = (Int)(fmod((mutCurrentTime/86400),365))
             let mutatedHour = (Int)(fmod((mutCurrentTime/3600),24))
-            let doubled : Double = (Double)(((mutatedDay+daySpan)*24)+mutatedHour)
+            let doubled : Double = (Double)(((mutatedDay+dayGap)*24)+mutatedHour)
             let doubledLT : Double = (Double)(levelTime)
             let passedLT = fmod((doubled),doubledLT)
             let inted = (Int)(passedLT)
             let untilNextLevel = levelTime-inted
-            print("inted:\(inted)"+",untilNextLevel:\(untilNextLevel)")
-            print("currentTime:\(currentTime)"+",mutCurrentTime:\(mutCurrentTime)")
+           // print("inted:\(inted)"+",untilNextLevel:\(untilNextLevel)")
+           // print("currentTime:\(currentTime)"+",mutCurrentTime:\(mutCurrentTime)")
                 
             
-            if goalDay > (mutatedDay+daySpan){
+            if goalDay > (mutatedDay+dayGap){
                 untilNextLevelText = "次のレベルまで:\(untilNextLevel/24)日\(untilNextLevel-((untilNextLevel/24)*24))時間"
+                print("untilnextLevel:\(untilNextLevel)")
+                print("untilnextLevel/24:\(untilNextLevel/24)")
             } else {
                      untilNextLevelText = "目標達成"
             }
