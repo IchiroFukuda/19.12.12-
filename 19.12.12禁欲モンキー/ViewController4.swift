@@ -20,7 +20,7 @@ class ViewController4: UIViewController {
         
         ViewController4.textPage += 1
             if ViewController4.textPage > 9 {
-                ViewController4.textPage = 1
+                ViewController4.textPage = 0
             }
             
             //csvの文章を読み込む処理
