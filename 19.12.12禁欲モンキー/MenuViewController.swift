@@ -13,8 +13,8 @@ import Accounts
 import SCLAlertView
 
 var sectionTitle = ["","",""]
-var section0 = ["開始日を変更する","目標日数を変更する","過去の遺言を削除する","手記を残す","記録を見る"]
-var section1 = ["友人へ紹介する","このアプリを評価する"]
+var section0 = ["開始日を変更する","目標日数を変更する","過去の遺言を削除する","手記を残す","記録を見る","オナ禁のやり方"]
+var section1 = ["友人へ紹介する","このアプリを評価する","Twitterをフォローする"]
 var section2 = ["プライバシーポリシー","お問い合わせ・不具合報告"]
 
 let tableData = [section0,section1,section2]
@@ -84,6 +84,12 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
             let storyboard: UIStoryboard = self.storyboard!
                 let nextView = storyboard.instantiateViewController(withIdentifier: "record") as! RecordViewController
             self.navigationController?.pushViewController(nextView, animated: true)
+        }else if (indexPath.section == 0) && (indexPath.row == 5){
+            let storyboard: UIStoryboard = self.storyboard!
+                let nextView = storyboard.instantiateViewController(withIdentifier: "howto") as! HowToViewController
+            self.navigationController?.pushViewController(nextView, animated: true)
+            
+            
             
         }else if (indexPath.section == 1) && (indexPath.row == 0){
             
@@ -100,6 +106,10 @@ class MenuViewController: UITableViewController,UIPickerViewDelegate, UIPickerVi
             
         }else if (indexPath.section == 1) && (indexPath.row == 1){
             SKStoreReviewController.requestReview()
+            
+            }else if (indexPath.section == 1) && (indexPath.row == 2){
+                      let url = URL(string: "https://twitter.com/ichiro_program")
+                      UIApplication.shared.open(url!)
             
         }else if (indexPath.section == 2) && (indexPath.row == 0){
             
