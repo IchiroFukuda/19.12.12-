@@ -35,7 +35,6 @@ class csvDataManager{
         guard let csvFilePath = Bundle.main.path(forResource: "text",ofType: "csv") else {
             print("csvファイルが存在しません")
             return
-            
         }
         //おそらくここでcsvファイルを順番に見ていく指示が書かれている。
         do {
