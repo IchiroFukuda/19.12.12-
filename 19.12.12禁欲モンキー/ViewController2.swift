@@ -185,6 +185,7 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
         let dateFormater = DateFormatter()
         dateFormater.locale = Locale(identifier: "ja_JP")
         dateFormater.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        
         let dateString = dateFormater.date(from: startValue)
         startTime = dateString!
         timer = Timer.scheduledTimer(
@@ -643,8 +644,8 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
             
             if goalDay > (mutatedDay+dayGap){
                 untilNextLevelText = "次のレベルまで:\(untilNextLevel/24)日\(untilNextLevel-((untilNextLevel/24)*24))時間"
-                print("untilnextLevel:\(untilNextLevel)")
-                print("untilnextLevel/24:\(untilNextLevel/24)")
+                //print("untilnextLevel:\(untilNextLevel)")
+                //print("untilnextLevel/24:\(untilNextLevel/24)")
             } else {
                      untilNextLevelText = "目標達成"
             }
@@ -689,3 +690,4 @@ class ViewController2: UIViewController,UIPickerViewDelegate, UIPickerViewDataSo
     
     
 }
+
