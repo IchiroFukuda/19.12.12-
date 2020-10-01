@@ -117,9 +117,9 @@ class ViewController4: UIViewController {
         
       
         let userDefaults = UserDefaults.standard
-        let onakinSwitch = userDefaults.bool(forKey: "onakinSwitch")
+        let gameSwitch = userDefaults.bool(forKey: "gameSwitch")
         
-        if onakinSwitch == false {
+        if gameSwitch == false {
             ViewController4.myLevel = 0
         } else {
              ViewController4.myLevel = myLevel()
@@ -218,11 +218,7 @@ class ViewController4: UIViewController {
         
         level = ((day + dayGap)*24 + hour)  / levelTime
         }
-        print("day:\(day)")
-        print("dayGap:\(dayGap)")
-        print("hour:\(hour)")
-        print("levelTime:\(levelTime)")
-        print("level:\(level)")
+       
         
         if level > 11{
         return 11
